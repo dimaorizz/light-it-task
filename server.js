@@ -7,7 +7,7 @@ const passport = require('passport');
 const app = express(); // Creating express app
 
 const PORT = process.env.PORT || 3000;
-
+require('./config/mongoConnection')
 // Middlewares
 app.use(express.json()); // JSON bodyParser
 app.use(express.urlencoded({ extended: false }));
@@ -19,7 +19,9 @@ app.use(session({
         path: '/',
         httpOnly: true,
         maxAge: 60 * 60 * 1000 // maxAge: 60 minutes
-    }
+    },
+    resave: false,
+    saveUninitialized: false
 }));
 
 // Passport init
