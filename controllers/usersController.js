@@ -13,10 +13,10 @@ const signUp = async (req, res, next) => {
         })
         .catch((err) => {
             console.error(`User creation failed: ${err}`);
-            res.status(400).send({ error: 'User creation failed' });
+            res.status(400).send({ msg: 'User creation failed' });
         })
     } else {
-        res.status(400).send({ error: 'Bad input' });
+        res.status(400).send({ msg: 'Bad input' });
     }
 }
 
