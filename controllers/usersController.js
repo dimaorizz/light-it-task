@@ -20,6 +20,21 @@ const signUp = async (req, res, next) => {
     }
 }
 
+const signIn = async (req, res, next) => {
+    if(req.body.username && req.body.password) {
+        next();
+    } else {
+        res.status(400).send({ msg: 'Invalid Credantials' });
+    }
+}
+
+const logOut = (req, res, next) => {
+    req.logout();
+    res.redirect('/')
+}
+
 module.exports = {
-    signUp
+    signUp,
+    signIn,
+    logOut
 };

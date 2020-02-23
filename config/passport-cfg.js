@@ -1,5 +1,8 @@
+// Libs
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
+// Models
 const Users = require('../models/Users');
 
 passport.use(new LocalStrategy(async (username, password, done) => {
@@ -8,7 +11,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
         return done(null, false);
     }
     try{
-        if(password === user.password) {
+        if(await bcrypt.compare(password, user.password)) {
             return done(null, user);
         } else {
             return done(null, false);

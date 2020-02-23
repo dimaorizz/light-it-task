@@ -1,4 +1,3 @@
-const mocha = require('mocha');
 const chai = require('chai');
 const cahiHttp = require('chai-http');
 const app = require('../server');
