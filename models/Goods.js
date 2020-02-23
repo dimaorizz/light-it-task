@@ -14,6 +14,6 @@ const GoodsSchema = new Schema({
         type: Date,
         default: Date.now
     }
-})
+});
 
 module.exports = mongoose.model('goods', GoodsSchema);
