@@ -3,6 +3,8 @@ const express = require('express');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const passport = require('passport');
+// Importing routes
+const userRoute = require('./routes/usersRoute');
 
 const app = express(); // Creating express app
 
@@ -28,6 +30,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 require('./config/passport-cfg');
+
+//Routes
+app.use('/users', userRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port:${PORT}`);
