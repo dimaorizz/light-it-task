@@ -8,6 +8,7 @@ const passport = require('passport');
 // Importing routes
 const userRoute = require('./routes/usersRoute');
 const goodsRoute = require('./routes/goodsRoute');
+const ordersRoute = require('./routes/ordersRoute');
 
 const app = express(); // Creating express app
 
@@ -37,6 +38,7 @@ require('./config/passport-cfg');
 //Routes
 app.use('/users', userRoute);
 app.use('/goods', goodsRoute);
+app.use('/orders', ordersRoute);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port:${PORT}`);
