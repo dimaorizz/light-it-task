@@ -63,8 +63,31 @@ const updateStatus = async (req, res, next) => {
     }
 };
 
+const genBill = async (req, res, next) => {
+    if(req.params.id) {
+        try {
+            const order = await Orders.findById(req.params.id);
+            const item = await Goods.findById(order.productId);
+            const totalCost = order.discount > 0 ? item.cost / order.discount : item.cost; // if discount != 0 calculate new cost, else cost = cost
+            const bill = {
+                itemName: item.name,
+                totalCost: totalCost,
+                orderDate: order.creationDate.toLocaleDateString(),
+                billDate: new Date().toLocaleDateString()
+            }
+            res.status(200).send(bill);
+        } catch (error) {
+            console.error(`Bill genereting error: ${error}`);
+            res.status(500).send({ msg: `Database error` });
+        }
+    } else {
+        res.status(400).send({ msg: 'Bad input' });
+    }
+}
+
 module.exports = {
     getOrdersByDate,
     createOrder,
     updateStatus,
+    genBill
 }
