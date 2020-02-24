@@ -13,7 +13,8 @@ const ordersRoute = require('./routes/ordersRoute');
 const app = express(); // Creating express app
 
 const PORT = process.env.PORT || 3000;
-require('./config/mongoConnection')
+require('./config/mongoConnection');
+require('./loadFixtures');
 // Middlewares
 app.use(express.json()); // JSON bodyParser
 app.use(express.urlencoded({ extended: false }));
