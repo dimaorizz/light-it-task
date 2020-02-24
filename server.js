@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config();
 // Libs
 const express = require('express');
 const session = require('express-session');
