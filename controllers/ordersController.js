@@ -10,7 +10,7 @@ const isSeller = require('../utils/isSeller');
 const getOrdersByDate = async (req, res, next) => {
     try {
         let orders = await Orders.find();
-        if(req.query.from && req.query.to) {
+        if(req.query.from && req.query.to) { // validating input data
             orders = orders.filter( order => { // filter by date using converting date to ms via getTime method
                 return order.creationDate.getTime() >= Number(req.query.from) && order.creationDate.getTime() <= Number(req.query.to);
             });
@@ -28,7 +28,7 @@ const createOrder = async (req, res, next) => {
         try {
             const item = await Goods.findById(req.body.productId);
             if(new Date().getTime() - item.creationDate.getTime() > monthMiliseconds) { // if item was added a month ago
-                req.body.discount = 20;
+                req.body.discount = 20; // add discount 20%
             }
             const order = new Orders(req.body);
             order.save()
@@ -48,15 +48,17 @@ const createOrder = async (req, res, next) => {
 };
 
 const updateStatus = async (req, res, next) => {
-    if(req.params.id) {
-        if(await isCashier(req)) {
+    if(req.params.id) { // validating input data
+        if(await isCashier(req)) { // if user is a cashier
             Orders.updateOne({ _id: req.params.id}, { status: 'Оплачено' })
             .then(() => res.status(200).send({ msg: 'status updated by cashier'} ))
             .catch((err) => res.status(500).send({ msg: `Updating status error: ${err}` }));
-        } else if(await isSeller(req)) {
+        } else if(await isSeller(req)) { // if user is a seller
             Orders.updateOne({ _id: req.params.id}, { status: 'Обработано' })
             .then(() => res.status(200).send({ msg: 'status updated by seller'} ))
             .catch((err) => res.status(500).send({ msg: `Updating status error: ${err}` }));
+        } else {
+            res.status(400).send({ msg: 'User is not permitted' });
         }
     } else {
         res.status(400).send({ msg: `Bad input`});
@@ -64,12 +66,12 @@ const updateStatus = async (req, res, next) => {
 };
 
 const genBill = async (req, res, next) => {
-    if(req.params.id) {
+    if(req.params.id) { // if user is a cashier
         try {
             const order = await Orders.findById(req.params.id);
             const item = await Goods.findById(order.productId);
             const totalCost = order.discount > 0 ? item.cost / order.discount : item.cost; // if discount != 0 calculate new cost, else cost = cost
-            const bill = {
+            const bill = { // initializing bill
                 itemName: item.name,
                 totalCost: totalCost,
                 orderDate: order.creationDate.toLocaleDateString(),

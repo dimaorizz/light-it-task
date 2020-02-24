@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const Users = require('../models/Users');
 
 const signUp = async (req, res, next) => {
-    if(req.body.username && req.body.password && req.body.role) {
+    if(req.body.username && req.body.password && req.body.role) { // validating input data
         const password = await bcrypt.hash(req.body.password, 10); // encrypting password with salt = 10
         const user = new Users({ username: req.body.username, password: password, role: req.body.role });
         user.save()
@@ -21,7 +21,7 @@ const signUp = async (req, res, next) => {
 }
 
 const signIn = async (req, res, next) => {
-    if(req.body.username && req.body.password) {
+    if(req.body.username && req.body.password) { // validating input data
         next();
     } else {
         res.status(400).send({ msg: 'Invalid Credantials' });

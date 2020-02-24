@@ -9,10 +9,10 @@ const getAllGoods = async (req, res, next) => {
         console.error(`Error getting goods ${error}`);
         res.status(500).send({ msg: 'Unable to get goods' });
     }
-}
+};
 
 const createItem = async (req, res, next) => {
-    if(req.body.name && req.body.cost && !isNaN(Number(req.body.cost))) {
+    if(req.body.name && req.body.cost && !isNaN(Number(req.body.cost))) { // validating input data
         const item = new Goods({ name: req.body.name, cost: req.body.cost });
         item.save()
         .then(() => {
@@ -25,7 +25,7 @@ const createItem = async (req, res, next) => {
     } else {
         res.status(400).send({ msg: 'Bad input' });
     }
-}
+};
 
 module.exports = {
     getAllGoods,
